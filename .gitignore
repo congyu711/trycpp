@@ -7,3 +7,4 @@ examples/
 *.log
 *.in
 test/
+compile_flags.txt
