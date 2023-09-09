@@ -12,7 +12,7 @@ int main()
     ios::sync_with_stdio(false);
     cin.tie(0);
     cout.tie(0);
-    int T;
+    int T = 1;
     cin >> T;
     while (T--)
         solve();
@@ -20,7 +20,5 @@ int main()
 
 void solve()
 {
-    ll a, b;
-    cin >> a >> b;
-    cout << a + b << '\n';
+    
 }
