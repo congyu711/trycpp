@@ -1,8 +1,2 @@
-
-.PHONY: clean CLEAN
-
-clean:
-	find . -type f ! -name "*.*" ! -name "makefile"
-
-CLEAN:
-	find . -type f ! -name "*.*" ! -name "makefile" -delete
+CXX := g++-14
+CXXFLAGS := -std=c++20 -Wall -Wextra -Wpedantic -Werror
