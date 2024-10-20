@@ -4,7 +4,7 @@
 
 // 从字符串转换到T的具体实现，可以通过特化来扩展支持的类型
 template <class T, class = void>
-struct from_string_impl 
+struct from_string_impl
 {
 };
 
@@ -12,13 +12,12 @@ struct from_string_impl
 // 它被用来产生更好的编译错误信息
 namespace detail // hide impl detail
 {
-template <class T>
-auto has_from_string(int) -> decltype(
-    from_string_impl<T>::from_string(std::declval<std::string_view>()), 
-    std::true_type{});
+    template <class T>
+    auto has_from_string(int) -> decltype(from_string_impl<T>::from_string(std::declval<std::string_view>()),
+                                          std::true_type{});
 
-template <class T>
-std::false_type has_from_string(char);
+    template <class T>
+    std::false_type has_from_string(char);
 }
 template <class T>
 constexpr bool has_from_string = decltype(detail::has_from_string<T>(0))::value;
@@ -33,9 +32,13 @@ struct from_string_t
     //    auto j = from_string(std::string("10"));
     //    int k = j; // dangling reference错误
     template <class T>
-    operator T() const&& { return from_string_impl<T>::from_string(s); }
+    operator T() const && { return from_string_impl<T>::from_string(s); }
     template <class T>
-    operator T() const& { static_assert([]() {return false;}, "must not be stored (for lifetime reasons)"); }
+    operator T() const &
+    {
+        static_assert([]()
+                      { return false; }, "must not be stored (for lifetime reasons)");
+    }
 };
 
 // from_string_t的简单wrapper
@@ -55,7 +58,9 @@ struct from_string_impl<bool>
 };
 
 template <class T>
-struct my_range { /* ... */ };
+struct my_range
+{ /* ... */
+};
 
 template <class T>
 struct from_string_impl<my_range<T>, std::enable_if_t<has_from_string<T>>>
@@ -63,12 +68,10 @@ struct from_string_impl<my_range<T>, std::enable_if_t<has_from_string<T>>>
     static my_range<T> from_string(std::string_view s); // 自定义字符串到my_range<T>的实现
 };
 
-
 static_assert(has_from_string<int>);
 static_assert(!has_from_string<char>);
 static_assert(has_from_string<my_range<int>>);
 static_assert(!has_from_string<my_range<float>>);
-
 
 void test()
 {
@@ -79,6 +82,5 @@ void test()
     // 下面的使用方法存在dangling reference的问题
     // 幸运的是它会产生编译错误  "must not be stored (for lifetime reasons)");
     // auto j = from_string("10");
-    // int k = j; 
-
+    // int k = j;
 }
