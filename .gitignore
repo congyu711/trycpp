@@ -4,7 +4,10 @@
 !makefile
 .vscode/
 examples/
+build/
+.cache/
 *.log
 *.in
 test/
 compile_flags.txt
+.ds_store
